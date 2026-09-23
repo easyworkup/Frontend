@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # TODO: codegen (`pnpm codegen`) требует OpenAPI-спеку easyworkup-api
+      # (репозиторий `easyworkup/back-end-`) и сюда пока не подключён. Самый
+      # чистый вариант — стянуть артефакт `openapi` из последнего успешного
+      # прогона CI того репозитория через `actions/download-artifact` с
+      # `repository: easyworkup/back-end-` и `github-token` с доступом к нему,
+      # выставить `API_OPENAPI_URL=file://.../openapi.json` и запустить
+      # `pnpm codegen` перед сборкой. До тех пор src/api/generated собирается
+      # только локально.
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Build
+        run: pnpm build
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      # Тот же принцип, что в easyworkup-api: Coolify деплоит по вебхуку.
+      # Секрет COOLIFY_DEPLOY_WEBHOOK — в Settings → Secrets and variables →
+      # Actions этого репозитория.
+      - name: Trigger Coolify deploy
+        if: env.COOLIFY_DEPLOY_WEBHOOK != ''
+        env:
+          COOLIFY_DEPLOY_WEBHOOK: ${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}
+        run: curl -fsSL -X POST "$COOLIFY_DEPLOY_WEBHOOK"
+
+      - name: Skip (no webhook configured yet)
+        if: env.COOLIFY_DEPLOY_WEBHOOK == ''
+        env:
+          COOLIFY_DEPLOY_WEBHOOK: ${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}
+        run: echo "COOLIFY_DEPLOY_WEBHOOK не задан — деплой пропущен, см. комментарий выше"

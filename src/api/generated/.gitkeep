@@ -1,0 +1,2 @@
+Содержимое этой папки генерируется командой `pnpm codegen` (orval) из
+OpenAPI-спеки easyworkup-api и не хранится в git — см. корневой .gitignore.

@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # TODO: codegen (`pnpm codegen`) требует OpenAPI-спеку easyworkup-api и
+      # сюда пока не подключён. Самый чистый вариант — стянуть артефакт
+      # `openapi` из последнего успешного прогона CI easyworkup-api через
+      # `actions/download-artifact` с `repository: easyworkup/api` и
+      # `github-token` с доступом к тому репозиторию, выставить
+      # `API_OPENAPI_URL=file://.../openapi.json` и запустить `pnpm codegen`
+      # перед сборкой. До тех пор src/api/generated собирается только локально.
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Build
+        run: pnpm build
