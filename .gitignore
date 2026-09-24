@@ -5,8 +5,8 @@ dist/
 .env.local
 
 # Генерируется `pnpm codegen` (orval) из OpenAPI-спеки бэка — не коммитим.
-src/api/generated/*
-!src/api/generated/.gitkeep
+src/shared/api/generated/*
+!src/shared/api/generated/.gitkeep
 
 *.log
 .DS_Store
