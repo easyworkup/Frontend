@@ -1,0 +1,3 @@
+Эта папка — выход `pnpm codegen` (orval), в git не хранится (см. .gitignore).
+Сюда orval кладёт typed-клиент React Query (client/) и Zod-схемы (zod/)
+по OpenAPI-спеке easyworkup-api. Запустите `pnpm codegen`, если папка пуста.

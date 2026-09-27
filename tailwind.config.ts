@@ -17,6 +17,8 @@ const config: Config = {
         "warn-soft": "#FBEBDD",
         ok: "#2A7A4A",
         "ok-soft": "#E4F3E9",
+        danger: "#C74A2E",
+        "danger-soft": "#F8E2DB",
       },
       fontFamily: {
         sans: ["Manrope", "sans-serif"],

@@ -14,12 +14,12 @@ export default defineConfig({
     input,
     output: {
       mode: "tags-split",
-      target: "src/api/generated/client",
+      target: "src/shared/api/generated/client",
       client: "react-query",
       httpClient: "fetch",
       override: {
         mutator: {
-          path: "src/api/fetcher.ts",
+          path: "src/shared/api/fetcher.ts",
           name: "apiFetch",
         },
       },
@@ -31,7 +31,7 @@ export default defineConfig({
     input,
     output: {
       mode: "tags-split",
-      target: "src/api/generated/zod",
+      target: "src/shared/api/generated/zod",
       client: "zod",
     },
   },
