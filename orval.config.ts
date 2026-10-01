@@ -1,12 +1,10 @@
 import { defineConfig } from "orval";
 
 /**
- * Источник контракта — OpenAPI-спека easyworkup-api. По умолчанию берём с
- * локального дев-сервера бэка; для CI/прод-сборки переопределяем
- * API_OPENAPI_URL на статичный openapi.json (артефакт CI бэка) или на
- * задеплоенный /api-json.
+ * По умолчанию используем проверенную пару api/openapi.json + manifest.
+ * Backend CI передаёт свой точный артефакт через API_OPENAPI_URL.
  */
-const input = { target: process.env.API_OPENAPI_URL ?? "http://localhost:4000/api-json" };
+const input = { target: process.env.API_OPENAPI_URL ?? "api/openapi.json" };
 
 export default defineConfig({
   // Typed-клиент на React Query — хуки useXxxQuery/useXxxMutation по каждому эндпоинту.
@@ -14,10 +12,13 @@ export default defineConfig({
     input,
     output: {
       mode: "tags-split",
-      target: "src/shared/api/generated/client",
+      target: "src/shared/api/generated/client/endpoints.ts",
+      schemas: "src/shared/api/generated/models",
+      clean: true,
       client: "react-query",
       httpClient: "fetch",
       override: {
+        fetch: { includeHttpResponseReturnType: false },
         mutator: {
           path: "src/shared/api/fetcher.ts",
           name: "apiFetch",
@@ -31,7 +32,8 @@ export default defineConfig({
     input,
     output: {
       mode: "tags-split",
-      target: "src/shared/api/generated/zod",
+      target: "src/shared/api/generated/zod/endpoints.ts",
+      clean: true,
       client: "zod",
     },
   },
