@@ -1,0 +1,2 @@
+# Preserve exact backend artifact bytes for SHA-256 verification on every OS.
+api/*.json -text

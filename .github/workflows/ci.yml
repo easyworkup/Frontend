@@ -35,14 +35,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # TODO: codegen (`pnpm codegen`) требует OpenAPI-спеку easyworkup-api
-      # (репозиторий `easyworkup/back-end-`) и сюда пока не подключён. Самый
-      # чистый вариант — стянуть артефакт `openapi` из последнего успешного
-      # прогона CI того репозитория через `actions/download-artifact` с
-      # `repository: easyworkup/back-end-` и `github-token` с доступом к нему,
-      # выставить `API_OPENAPI_URL=file://.../openapi.json` и запустить
-      # `pnpm codegen` перед сборкой. До тех пор src/api/generated собирается
-      # только локально.
+      - name: Verify pinned API contract
+        run: pnpm verify:contract
+
+      - name: Generate API client and schemas
+        run: pnpm codegen
+
+      - name: Typecheck generated consumer
+        run: pnpm typecheck
+
+      - name: Test API transport and contract
+        run: pnpm test:contract
 
       - name: Lint
         run: pnpm lint
