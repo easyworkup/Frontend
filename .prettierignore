@@ -1,4 +1,7 @@
 # Immutable exported artifacts; reformatting invalidates their checksum.
+.next/
+node_modules/
+pnpm-lock.yaml
 api/openapi.json
 api/openapi-source.json
 src/shared/api/generated/
