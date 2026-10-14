@@ -1,11 +1,22 @@
 import type { ReactNode } from "react";
+import localFont from "next/font/local";
 import { AuthIntro } from "./AuthIntro";
+
+const manrope = localFont({
+  src: "../fonts/Manrope.ttf",
+  weight: "200 800",
+  display: "swap",
+});
 
 export function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <main className="grid min-h-dvh grid-rows-[auto_1fr] bg-bg text-text lg:grid-cols-[minmax(0,31fr)_minmax(0,41fr)] lg:grid-rows-1">
-      <AuthIntro />
-      {children}
+    <main
+      className={`${manrope.className} grid min-h-dvh items-center overflow-clip bg-bg text-text`}
+    >
+      <div className="relative isolate mx-auto grid min-h-dvh w-full max-w-[1440px] grid-rows-[auto_1fr] lg:min-h-[min(900px,100dvh)] lg:grid-cols-[minmax(0,31fr)_minmax(0,41fr)] lg:grid-rows-1">
+        <AuthIntro />
+        {children}
+      </div>
     </main>
   );
 }

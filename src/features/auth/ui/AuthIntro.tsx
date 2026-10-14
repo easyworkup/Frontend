@@ -20,31 +20,32 @@ const steps = [
 
 export function AuthIntro() {
   return (
-    <aside className="min-w-0 px-6 py-8 sm:px-10 lg:bg-accent-soft lg:p-16">
+    <aside className="relative min-w-0 px-6 py-8 sm:px-10 lg:p-16 lg:before:absolute lg:before:inset-y-[-100dvh] lg:before:right-0 lg:before:-z-10 lg:before:w-screen lg:before:bg-accent-soft">
       <Link
         href="/"
-        className="inline-block rounded-sm text-2xl font-bold text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:text-3xl"
+        className="inline-block rounded-sm text-2xl font-bold text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:text-3xl lg:leading-[44px]"
       >
         EasyWorkUp
       </Link>
 
-      <h2 className="mt-9 hidden max-w-[492px] text-[40px] font-bold leading-[1.45] tracking-tight lg:block">
+      <h2 className="mt-9 hidden max-w-[492px] text-[40px] font-bold leading-[1.45] lg:block">
         Карьера начинается
         <br className="hidden xl:block" /> со следующего шага
       </h2>
 
-      <p className="mt-9 hidden max-w-[492px] text-base leading-6 text-text-soft lg:block">
-        Сильное резюме, понятный план развития и практика перед настоящим интервью.
+      <p className="mt-9 hidden max-w-[492px] text-lg leading-[26px] text-text-soft lg:block">
+        Сильное резюме, понятный план развития
+        <br className="hidden xl:block" /> и практика перед настоящим интервью.
       </p>
 
-      <ol className="mt-9 hidden space-y-6 lg:block">
+      <ol className="mt-9 hidden space-y-5 lg:block">
         {steps.map((step) => (
           <li key={step.number} className="flex items-baseline gap-4">
-            <span className="shrink-0 text-lg font-semibold text-accent lg:text-xl">
+            <span className="shrink-0 text-xl font-bold leading-[29px] text-accent">
               {step.number}
             </span>
             <div>
-              <h3 className="text-lg font-bold leading-7 lg:text-xl">{step.title}</h3>
+              <h3 className="text-xl font-bold leading-[29px]">{step.title}</h3>
               <p className="mt-1 text-sm leading-5 text-text-soft">{step.description}</p>
             </div>
           </li>

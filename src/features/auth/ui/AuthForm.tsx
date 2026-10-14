@@ -29,10 +29,10 @@ export function AuthScreen({ config, onSubmit }: AuthScreenProps) {
 
   return (
     <AuthPanel headingId={headingId}>
-      <h1 id={headingId} className="text-3xl font-bold leading-tight lg:text-[32px]">
+      <h1 id={headingId} className="text-3xl font-bold leading-[1.45] lg:text-[32px]">
         {config.title}
       </h1>
-      <p className="mt-3 text-base leading-6 text-text-soft">{config.description}</p>
+      <p className="mt-5 text-base leading-[23px] text-text-soft">{config.description}</p>
 
       <form className="mt-5" onSubmit={handleSubmit}>
         <div className="space-y-5">
@@ -41,7 +41,7 @@ export function AuthScreen({ config, onSubmit }: AuthScreenProps) {
 
             return (
               <div key={field.name}>
-                <label htmlFor={fieldId} className="mb-2 block text-sm font-semibold">
+                <label htmlFor={fieldId} className="mb-2 block text-sm font-bold">
                   {label}
                 </label>
                 <input
@@ -59,7 +59,7 @@ export function AuthScreen({ config, onSubmit }: AuthScreenProps) {
         </div>
 
         {!!config.actions?.length && (
-          <div className="mt-5 flex items-start justify-between gap-3 text-sm">
+          <div className="mt-5 flex flex-wrap items-start gap-x-10 gap-y-3 text-sm">
             {config.actions.map((action) => {
               if (action.type === "checkbox") {
                 const actionId = `${formId}-${action.name}`;
