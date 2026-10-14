@@ -4,7 +4,7 @@ import { AuthScreen } from "../../ui/AuthForm";
 import type { AuthSubmitHandler } from "../../model/types";
 import { forgotPasswordConfig } from "../model/config";
 import { ResetStatus } from "./ResetStatus";
-import { AuthIntro } from "../../ui/AuthIntro";
+import { AuthLayout } from "../../ui/AuthLayout";
 import { useState } from "react";
 import { ResetStatusProps } from "../model/reset-status.types";
 
@@ -46,13 +46,12 @@ export default function ForgotPasswordScreen() {
     }
   };
   return (
-    <main className="grid min-h-dvh bg-bg text-text md:grid-cols-[3fr_4fr]">
-      <AuthIntro />
+    <AuthLayout>
       {result === null ? (
         <AuthScreen config={forgotPasswordConfig} onSubmit={handleForgotPassword} />
       ) : (
         <ResetStatus {...result} />
       )}
-    </main>
+    </AuthLayout>
   );
 }
