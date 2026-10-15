@@ -14,25 +14,40 @@ const modules = [
     description: "Поведенческие и технические вопросы, live-кодинг с обратной связью от ИИ.",
     href: "/interview",
   },
+  {
+    title: "Вход",
+    description: "Тест экрана",
+    href: "/login",
+  },
+  {
+    title: "Регистрация",
+    description: "Тест экрана",
+    href: "/login",
+  },
+  {
+    title: "Сброс пароля",
+    description: "Тест экрана",
+    href: "/login",
+  },
 ];
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-10 px-6 py-16">
-      <div className="text-center max-w-xl">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-10 px-6 py-16">
+      <div className="max-w-xl text-center">
         <h1 className="text-3xl font-extrabold">EasyWorkUp</h1>
         <p className="mt-3 text-text-soft">
-          Сервис помощи с трудоустройством в IT: резюме с ИИ-подсказками,
-          персональный карьерный роадмап и подготовка к собеседованиям.
+          Сервис помощи с трудоустройством в IT: резюме с ИИ-подсказками, персональный карьерный
+          роадмап и подготовка к собеседованиям.
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3 w-full max-w-3xl">
+      <div className="grid w-full max-w-3xl gap-4 sm:grid-cols-3">
         {modules.map((m) => (
           <a
             key={m.href}
             href={m.href}
-            className="rounded-2xl border border-border bg-surface p-5 hover:border-accent transition-colors"
+            className="rounded-2xl border border-border bg-surface p-5 transition-colors hover:border-accent"
           >
             <div className="font-bold">{m.title}</div>
             <p className="mt-2 text-sm text-text-soft">{m.description}</p>
