@@ -1,16 +1,14 @@
 import { Button, Card, CenteredIntro, IconBadge } from "@/shared/ui";
 import { ResetStatusProps } from "../model/reset-status.types";
 import { statusContent } from "./reset-status.content";
+import { AuthPanel } from "../../ui/AuthLayout";
 
 export function ResetStatus(props: ResetStatusProps) {
   const content = statusContent[props.status];
   const cooldownSeconds = props.cooldownSeconds ?? 0;
   return (
-    <section
-      className="flex items-center justify-center px-6 py-12 sm:px-10 md:px-8 md:py-20 lg:px-16"
-      aria-live="polite"
-    >
-      <Card className="p-5 sm:p-8">
+    <AuthPanel live>
+      <Card className="w-full min-w-0 p-5 sm:p-8">
         <CenteredIntro
           icon={
             <IconBadge
@@ -21,15 +19,15 @@ export function ResetStatus(props: ResetStatusProps) {
               {content.icon}
             </IconBadge>
           }
-          title={content.title}
+          title={<h1>{content.title}</h1>}
           subtitle={content.description}
         />
 
-        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-7 flex flex-col gap-3">
           {props.status !== "password-changed" && (
             <Button
               type="button"
-              className="w-full whitespace-normal px-4 text-center"
+              className="h-auto min-h-[52px] w-full whitespace-normal px-4 py-3 text-center"
               disabled={cooldownSeconds > 0}
               onClick={props.onRetry}
             >
@@ -42,13 +40,13 @@ export function ResetStatus(props: ResetStatusProps) {
           <Button
             type="button"
             variant={props.status === "password-changed" ? "primary" : "outline"}
-            className="w-full whitespace-normal px-4 text-center"
+            className="h-auto min-h-[52px] w-full whitespace-normal px-4 py-3 text-center"
             onClick={props.onBack}
           >
             {props.status === "password-changed" ? "Перейти ко входу" : "Назад"}
           </Button>
         </div>
       </Card>
-    </section>
+    </AuthPanel>
   );
 }
