@@ -11,3 +11,5 @@ src/shared/api/generated/*
 
 *.log
 .DS_Store
+
+*.tsbuildinfo
