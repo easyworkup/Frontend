@@ -1,0 +1,19 @@
+Key,Summary,Priority,Description,Labels,Components,Assignee
+BUG-001,"[Critical] Login: ошибки API не отображаются в UI (пустой alert)","Critical","Пустой alert при ошибках 401/403","login,frontend,error-handling,critical","frontend,auth,login",Frontend Team
+BUG-002,"[Critical] Register: ошибки API не отображаются в UI","Critical","Пустой alert при дубликате email, коротком пароле, чекбоксе","register,frontend,error-handling,critical","frontend,auth,register",Frontend Team
+BUG-003,"[Critical] Forgot Password: сообщение успеха не отображается",Critical,"Нет сообщения 'Если аккаунт с такой почтой существует...'","forgot-password,frontend,error-handling,critical","frontend,auth,forgot-password",Frontend Team
+BUG-004,"[Critical] Login: ошибки 401/403 не отображаются","Critical","Пустой alert при 401/403","login,frontend,error-handling,critical","frontend,auth,login",Frontend Team
+BUG-005,"[Critical] Register: ошибки API не отображаются в UI (дубликат, короткий пароль, чекбокс)","Critical","Пустой alert при дубликате email, коротком пароле, чекбоксе","register,frontend,error-handling,critical","frontend,auth,register",Frontend Team
+BUG-005,"[Critical] Register: короткий пароль (<8) — ошибка не отображается",Critical,"Пустой alert при пароле <8 символов","register,validation,critical","frontend,auth,register",Frontend Team
+BUG-006,"[High] Register: чекбокс согласия не блокирует сабмит",High,"HTML5 required игнорируется, сабмит проходит без галочки","register,validation,html5,high","frontend,auth,register",Frontend Team
+BUG-007,"[High] Register: дубликат email (409) не отображается",High,"Ошибка 409 не в UI","register,duplicate,error-handling,high","frontend,auth,register",Frontend Team
+BUG-008,"[Critical] Forgot Password: сообщение успеха не отображается",Critical,"Нет сообщения 'Если аккаунт с такой почтой существует...'","forgot-password,frontend,success-message,critical","frontend,auth,forgot-password",Frontend Team
+BUG-009,"[High] Register: чекбокс согласия не блокирует сабмит",High,"HTML5 required игнорируется, сабмит проходит без галочки","register,validation,html5,high","frontend,auth,register",Frontend Team
+BUG-010,"[High] Register: дубликат email (409) не отображается",High,"Ошибка 409 не в UI","register,duplicate,error-handling,high","frontend,auth,register",Frontend Team
+BUG-011,"[High] Register: короткий пароль (<8) — ошибка не отображается",High,"Валидация пароля не в UI","register,validation,critical","frontend,auth,register",Frontend Team
+BUG-011,"[High] Register: чекбокс не блокирует сабмит",High,"HTML5 required игнорируется","register,validation,html5,high","frontend,auth,register",Frontend Team
+BUG-012,"[Critical] Forgot Password: сообщение успеха не отображается",Critical,"Нет сообщения успеха после отправки","forgot-password,success-message,critical","frontend,auth,forgot-password",Frontend Team
+BUG-013,"[Medium] Login: Tab навигация пропускает кнопку Войти",Medium,"Tab order: email→password→checkbox→пропускает кнопку","login,frontend,a11y,medium","frontend,login",Frontend Team
+BUG-014,"[Medium] Register: Tab навигация пропускает кнопку Зарегистрироваться",Medium,"Tab order: name→email→password→checkbox→пропускает кнопку","register,frontend,a11y,medium","frontend,register",Frontend Team
+BUG-015,"[Medium] Forgot Password: Tab навигация email→button→link",Medium,"Tab order email→button→link","forgot-password,frontend,a11y,medium","frontend,forgot-password",Frontend Team
+BUG-016,"[Medium] Login: Tab навигация email→password→checkbox→кнопка пропущена",Medium,"Tab order email→password→checkbox→button пропущена","login,frontend,a11y,medium","frontend,login",Frontend Team
