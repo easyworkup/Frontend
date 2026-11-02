@@ -1,5 +1,5 @@
-import RegisterScreen from "@/features/auth/register/ui/RegisterScreen";
+import RegisterPage from "@/pages/register/RegisterPage";
 
 export default function Register() {
-  return <RegisterScreen />;
+  return <RegisterPage />;
 }

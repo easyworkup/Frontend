@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import type { ResumeView } from "@/entities/resume";
 import { Card, Divider } from "@/shared/ui";
 import { LinkIcon, MailIcon, MapPinIcon } from "@/shared/ui/icons";
@@ -37,8 +38,8 @@ export function ResumePreview({ className, resume }: ResumePreviewProps) {
             <h3 className="pb-4 text-xl font-bold text-accent">Опыт работы</h3>
             {resume.experience.map((workPlace, index) => {
               return (
-                <>
-                  <div className="grid gap-2" key={index}>
+                <Fragment key={index}>
+                  <div className="grid gap-2">
                     <h3 className="text text-xl font-semibold">{workPlace.role}</h3>
                     <p className="font-thin">{workPlace.company}</p>
                     <p className="text-sm text-text-soft">{workPlace.from}</p>
@@ -53,7 +54,7 @@ export function ResumePreview({ className, resume }: ResumePreviewProps) {
                       );
                     })}
                   </div>
-                </>
+                </Fragment>
               );
             })}
           </div>
