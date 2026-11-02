@@ -11,7 +11,7 @@ import type { NavItem } from "@/shared/config/site";
  * это навигация по реальным маршрутам, а не локальный выбор на странице.
  */
 export function SegmentedLinkTabs({ items, className }: { items: NavItem[]; className?: string }) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   return (
     <nav className={cn("flex gap-0.5 rounded-[10px] bg-bg p-1", className)}>
       {items.map((item) => {
