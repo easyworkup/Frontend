@@ -1,5 +1,5 @@
-import ForgotPasswordScreen from "@/features/auth/forgot-password/ui/ForgotPasswordScreen";
+import ForgotPasswordPage from "@/_pages/forgot-password/ForgotPasswordPage";
 
 export default function ForgotPassword() {
-  return <ForgotPasswordScreen />;
+  return <ForgotPasswordPage />;
 }

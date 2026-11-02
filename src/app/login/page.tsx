@@ -1,10 +1,5 @@
-import LoginScreen from "@/features/auth/login/ui/LoginScreen";
-import { ReactNode } from "react";
-
-type AuthLayoutProps = {
-  children: ReactNode;
-};
+import LoginPage from "@/_pages/login/LoginPage";
 
 export default function Login() {
-  return <LoginScreen />;
+  return <LoginPage />;
 }
