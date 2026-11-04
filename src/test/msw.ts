@@ -7,7 +7,7 @@ export const server = setupServer(...handlers);
 // Хелперы для тестов
 export const msw = {
   // Запуск сервера перед тестами
-  start: () => server.listen({ port: 3001 }),
+  start: () => server.listen(),
 
   // Остановка после тестов
   stop: () => server.close(),
@@ -22,5 +22,5 @@ export const msw = {
   restore: () => server.restoreHandlers(),
 };
 
-// Экспортируем базовый URL для API тестов
+// Экспортируем базовый URL для API тестов (если понадобится отдельный HTTP сервер)
 export const MSW_BASE_URL = "http://localhost:3001";
