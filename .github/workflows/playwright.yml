@@ -1,0 +1,197 @@
+# .github/workflows/playwright.yml
+# GitHub Actions workflow для Playwright тестов
+# Запускается при: push в main/develop, pull_request в main/develop
+
+name: Playwright Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# Отменяем предыдущие запуски для той же ветки
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Базовый URL для тестов
+  BASE_URL: http://localhost:3000
+  # MSW будет запущен в globalSetup
+  # PLAYWRIGHT_BASE_URL не нужен, используем BASE_URL
+
+jobs:
+  # ===========================================
+  # JOB 1: ЛИНТИНГ + ТАЙПЧЕК (быстрая проверка)
+  # ===========================================
+  lint-and-typecheck:
+    name: Lint & TypeCheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ESLint
+        run: pnpm lint
+
+      - name: Run TypeScript type check
+        run: pnpm tsc --noEmit
+
+  # ===========================================
+  # JOB 2: PLAYWRIGHT TESTS (основной джоб)
+  # ===========================================
+  playwright-tests:
+    name: Playwright Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: lint-and-typecheck # Запускаем только если линт прошел
+
+    # Матрица для разных браузеров (пока только chromium)
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium]
+        # project: [chromium, firefox, webkit]  # раскомментируй для всех браузеров
+
+    steps:
+      # --- 1. Checkout ---
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --- 2. Setup pnpm ---
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      # --- 2. Setup Node.js ---
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      # --- 3. Install dependencies ---
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # --- 3.5. Install Playwright browsers ---
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        # Для матрицы браузеров:
+        # run: npx playwright install --with-deps ${{ matrix.project }}
+
+      # --- 4. Start dev server ---
+      - name: Start dev server
+        run: |
+          # Запускаем dev сервер в фоне
+          pnpm dev &
+          # Ждем пока сервер поднимется
+          sleep 10
+          # Проверяем что сервер отвечает
+          curl -f http://localhost:3000 || exit 1
+        env:
+          BASE_URL: http://localhost:3000
+
+      # --- 5. Run Playwright Tests ---
+      - name: Run Playwright tests
+        run: npx playwright test --project=chromium
+        env:
+          BASE_URL: http://localhost:3000
+          CI: true
+
+      # --- 6. Upload Playwright HTML Report ---
+      - name: Upload Playwright HTML Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      # --- 7. Upload Test Artifacts (screenshots, videos, traces) ---
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts-${{ matrix.project }}
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
+
+  # ===========================================
+  # JOB 3: API CONTRACT TESTS (ОТКЛЮЧЕНО - настраивается отдельно)
+  # ===========================================
+  # api-contract:
+  #   name: API Contract Tests
+  #   needs: playwright-tests
+  #   if: always() # Запускаем даже если тесты упали
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 15
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: pnpm/action-setup@v4
+  #       with:
+  #         version: 9
+  #         run_install: false
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '22'
+  #         cache: 'pnpm'
+  #     - run: pnpm install --frozen-lockfile
+  #     - name: Run API Contract Tests
+  #       run: npx playwright test tests/e2e/api-contract.spec.ts --project=chromium
+  #       env:
+  #         BASE_URL: http://localhost:3001
+  #     - name: Upload API Contract Results
+  #       if: always()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: api-contract-results
+  #         path: test-results/
+  #         retention-days: 14
+
+  # ===========================================
+  # JOB 4: NOTIFY ON FAILURE (опционально)
+  # ===========================================
+  notify:
+    name: Notify on Failure
+    needs: playwright-tests # Зависит только от основных тестов
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify on Failure
+        run: |
+          echo "❌ Tests failed!"
+          echo "Repository: ${{ github.repository }}"
+          echo "Run: ${{ github.run_id }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Commit: ${{ github.sha }}"
+          # Здесь можно добавить: slack, telegram, email уведомления
+          # - name: Slack notification
+          #   uses: 8398a7/action-slack@v3
+          #   with:
+          #     status: failure
+          #     channel: '#alerts'
+          #     text: "Playwright tests failed in ${{ github.repository }}"
+          #   env:
+          #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
